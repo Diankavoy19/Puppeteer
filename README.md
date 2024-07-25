@@ -20,24 +20,11 @@ const searchButton = "#search>button";
 const title = "#content>h1";
 
 (async () => {
-    // Launch the browser and open a new blank page
-    // Headless Execution
     const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-    // Non Headless Execution
-    // const browser = await puppeteer.launch({headless:false});
     const page = await browser.newPage();
-
-    // Navigate the page to a URL
     await page.goto("https://demo.opencart.com/",{waitUntil: 'networkidle0'});
-
-    // Set screen size
     await page.setViewport({ width: 1080, height: 1024 });
-
-    // Type into search box
     await page.type('[name="search"]', "Macbook");
-
-    // Wait and click on search button
-    // await page.waitForSelector(searchButton);
     await page.click(searchButton);
     await page.waitForSelector(title);
     await page.screenshot({
@@ -49,9 +36,24 @@ const title = "#content>h1";
         printBackground: true,
         format: 'A4',
     });
-    //To reflect CSS used for screens instead of print
     await page.emulateMediaType('screen');
     await browser.close();
 })();
 ```
-* 
+* line 1 - Import the Puppeteer library in your script
+* line 7 - Use the puppeteer.launch() method to launch the browser instance in headless execution. For non headless execution you need to use: ```const browser = await puppeteer.launch({headless:false});```
+* line 8 - Open a new blank page
+* line 9 - Navigate the page to a URL
+* line 10 - Set screen size
+* line 11 - Type into search box
+* line 12 - Click on search button
+* line 13 - Wait when the title will be visible
+* line 14-16 - Take a screenshot and set the path
+* line 17-22 - Generate the pdf file and set the parameters
+* line 23 - Reflect CSS used for screens instead of print
+* line 24 - Close the browser
+
+The above code, saved in the test.js file, can be run using Node as follows:
+```bash
+node test.js
+```
